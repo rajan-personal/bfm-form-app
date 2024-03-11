@@ -30,6 +30,8 @@ const SocialTypes = [
 ];
 
 export default function WorkInfo({ seller, setSeller, setPage }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [socialType, setSocialType] = useState("");
   const [socialLink, setSocialLink] = useState("");
 
@@ -112,6 +114,8 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append("image", seller.image);
     formData.append("resume", seller.resume);
@@ -157,7 +161,8 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
         }
       );
       console.log(response.data);
-      navigate("/Acknowledge");
+      setIsLoading(false);
+      alert("seller created!!");
     } catch (error) {
       console.error(error);
     }
@@ -330,7 +335,11 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
               </div>
             ))}
           </div>
-          <button type="submit">Submit</button>
+          {isLoading ? (
+            <button>Loading</button>
+          ) : (
+            <button type="submit">Submit</button>
+          )}
         </div>
       </form>
     </div>
