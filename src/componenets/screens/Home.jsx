@@ -7,7 +7,7 @@ import ProfessionalInfo from "../forms/ProfessionalInfo";
 import WorkInfo from "../forms/WorkInfo";
 
 export default function Home() {
-  const [page, setPage] = useState(4);
+  const [page, setPage] = useState(2);
 
   const [seller, setSeller] = useState({
     image: null,

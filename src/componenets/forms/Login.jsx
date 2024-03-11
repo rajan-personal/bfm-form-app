@@ -72,7 +72,10 @@ export default function Login({ setPage }) {
         .then((result) => {
           // User signed in successfully.
           let token = result.user.accessToken;
+          let uid = result.user.uid;
+          console.log(uid);
           sessionStorage.setItem("bfm-form-seller-token", token);
+          sessionStorage.setItem("bfm-form-seller-uid", uid);
 
           loginUser(token)
             .then((data) => {

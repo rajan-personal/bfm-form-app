@@ -1,11 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../styles/Form.module.css";
+import axios from "axios";
 
 export default function PersonalInfo({ seller, setSeller, setPage }) {
+  let emailValidateTimeOut;
+  let userNameValidateTimeOut;
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isUserNameValid, setIsUserNameValid] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setPage(3);
   };
+
+  const checkEmail = async (value) => {
+    try {
+      if (value === "") return Promise.resolve(false);
+      const uid = sessionStorage.getItem("bfm-form-seller-uid");
+      const response = await axios.get(
+        `https://api.blackfoxmetaverse.io/check/email?uid=${uid}&email=${value}`
+      );
+      return Promise.resolve(response.data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const checkUserName = async (value) => {
+    try {
+      if (value === "") return Promise.resolve(false);
+      const uid = sessionStorage.getItem("bfm-form-seller-uid");
+      const response = await axios.get(
+        `https://api.blackfoxmetaverse.io/check/userName?uid=${uid}&userName=${value}`
+      );
+      return Promise.resolve(response.data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  useEffect(() => {
+    if (emailValidateTimeOut) {
+      clearTimeout(emailValidateTimeOut);
+    }
+    emailValidateTimeOut = setTimeout(() => {
+      checkEmail(seller.email)
+        .then((res) => setIsEmailValid(res))
+        .catch((err) => setIsEmailValid(false));
+    }, 500);
+  }, [seller.email]);
+
+  useEffect(() => {
+    if (userNameValidateTimeOut) {
+      clearTimeout(userNameValidateTimeOut);
+    }
+    userNameValidateTimeOut = setTimeout(() => {
+      checkUserName(seller.userName)
+        .then((res) => setIsUserNameValid(res))
+        .catch((err) => setIsUserNameValid(false));
+    }, 500);
+  }, [seller.userName]);
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -64,6 +119,9 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
                   }))
                 }
               />
+              {isUserNameValid ? null : (
+                <h4 style={{ color: "red" }}>Username Invalid</h4>
+              )}
             </div>
           </div>
           <div>
@@ -111,6 +169,9 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
                   }))
                 }
               />
+              {isEmailValid ? null : (
+                <h4 style={{ color: "red" }}>Email Invalid</h4>
+              )}
             </div>
           </div>
           <div>

@@ -4,6 +4,7 @@ import { FaDribbble, FaGithub, FaLinkedinIn } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
 import { SiBehance } from "react-icons/si";
 import { RxCross2 } from "react-icons/rx";
+import axios from "axios";
 
 const SocialTypes = [
   {
@@ -108,11 +109,60 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("input completed");
-    alert("form submitted hitting server");
+
+    const formData = new FormData();
+    formData.append("image", seller.image);
+    formData.append("resume", seller.resume);
+    formData.append("name", seller.name);
+    formData.append("userName", seller.userName);
+    formData.append("gender", seller.gender);
+    formData.append("email", seller.email);
+    formData.append("phone_number", seller.phone_number);
+    formData.append("city", seller.city);
+    formData.append("profession", seller.profession);
+    formData.append("experience", seller.experience);
+    formData.append("collegeName", seller.collegeName);
+    formData.append("description", seller.description);
+    formData.append("services", JSON.stringify(seller.services));
+    formData.append("skills", JSON.stringify(seller.skills));
+    formData.append(
+      "experienceDetails",
+      JSON.stringify(seller.experienceDetails)
+    );
+    formData.append(
+      "socialMediaLinks",
+      JSON.stringify(seller.socialMediaLinks)
+    );
+
+    // Append images
+    seller.images.forEach((img, index) => {
+      formData.append("images", img);
+    });
+
+    // Append coordinates
+    formData.append("coordinates", JSON.stringify(seller.coordinates));
+
+    try {
+      const token = sessionStorage.getItem("bfm-form-seller-token");
+      const response = await axios.post(
+        "https://api.blackfoxmetaverse.io/main/seller",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            token: token,
+          },
+        }
+      );
+      console.log(response.data);
+      navigate("/Acknowledge");
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
