@@ -144,14 +144,27 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
     seller.images.forEach((img, index) => {
       formData.append("images", img);
     });
-
+    if (seller.video) {
+      formData.append("video", seller.video);
+    }
     // Append coordinates
     formData.append("coordinates", JSON.stringify(seller.coordinates));
 
     try {
-      const token = sessionStorage.getItem("bfm-form-seller-token");
+      // const token = sessionStorage.getItem("bfm-form-seller-token");
+      // const response = await axios.post(
+      //   "https://api.blackfoxmetaverse.io/main/seller",
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //       token: token,
+      //     },
+      //   }
+      // );
+      const token = "fhnsdoijkf";
       const response = await axios.post(
-        "https://api.blackfoxmetaverse.io/main/seller",
+        "http://localhost:4000/main/seller",
         formData,
         {
           headers: {
@@ -165,6 +178,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
       alert("seller created!!");
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -335,11 +349,36 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
               </div>
             ))}
           </div>
-          {isLoading ? (
-            <button>Loading</button>
-          ) : (
-            <button type="submit">Submit</button>
-          )}
+          <div>
+            <label htmlFor="video">Video (Optional)</label>
+            <input
+              type="file"
+              onChange={(e) =>
+                setSeller((prev) => {
+                  return { ...prev, video: e.target.files[0] };
+                })
+              }
+              accept="video/*"
+            />
+            {seller.video && (
+              <div>
+                <p>Video uploaded</p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSeller((prev) => {
+                      return { ...prev, video: null };
+                    })
+                  }
+                >
+                  Remove Video
+                </button>
+              </div>
+            )}
+          </div>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Loading..." : "submit"}
+          </button>
         </div>
       </form>
     </div>
