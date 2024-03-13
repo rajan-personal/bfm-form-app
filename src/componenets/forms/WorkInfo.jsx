@@ -151,20 +151,9 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
     formData.append("coordinates", JSON.stringify(seller.coordinates));
 
     try {
-      // const token = sessionStorage.getItem("bfm-form-seller-token");
-      // const response = await axios.post(
-      //   "https://api.blackfoxmetaverse.io/main/seller",
-      //   formData,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       token: token,
-      //     },
-      //   }
-      // );
-      const token = "fhnsdoijkf";
+      const token = sessionStorage.getItem("bfm-form-seller-token");
       const response = await axios.post(
-        "http://localhost:4000/main/seller",
+        "https://api.blackfoxmetaverse.io/main/seller",
         formData,
         {
           headers: {
@@ -173,6 +162,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
           },
         }
       );
+
       console.log(response.data);
       setIsLoading(false);
       alert("seller created!!");
