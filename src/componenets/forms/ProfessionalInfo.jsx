@@ -180,24 +180,26 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
             }
           />
         </div>
-        <div className={style.Resume}>
+        <div className={style.TextField}>
           <label htmlFor="resume" className={style.Label}>
             Resume
           </label>
-          <p>{seller.resume ? seller.resume.name : "Upload your Resume"}</p>
-          <label htmlFor="resume">Upload</label>
-          <input
-            type="file"
-            name="resume"
-            id="resume"
-            accept=".doc, .docx, .pdf"
-            onChange={(e) =>
-              setSeller((prev) => ({
-                ...prev,
-                resume: e.target.files[0],
-              }))
-            }
-          />
+          <div className={style.Resume}>
+            <p>{seller.resume ? seller.resume.name : "Upload your Resume"}</p>
+            <label htmlFor="resume">Upload</label>
+            <input
+              type="file"
+              name="resume"
+              id="resume"
+              accept=".doc, .docx, .pdf"
+              onChange={(e) =>
+                setSeller((prev) => ({
+                  ...prev,
+                  resume: e.target.files[0],
+                }))
+              }
+            />
+          </div>
         </div>
         <button
           className="PrimaryBtn"

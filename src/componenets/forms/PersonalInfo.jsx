@@ -93,6 +93,7 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
               }}
             />
           </label>
+          <div />
         </div>
         <div className={style.TextField}>
           <label htmlFor="name" className={style.Label}>

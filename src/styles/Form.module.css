@@ -36,8 +36,11 @@
 
 .NumberField {
   display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  align-items: center;
+  border: 1px solid var(--Grey-Grey-3, #e1e3e6);
+  gap: 0.5rem;
 }
 
 .NumberField label {
@@ -46,9 +49,13 @@
 }
 
 .NumberField input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   width: 100%;
-  font-size: 1.2rem;
   border: none;
+  font-size: 1rem;
+  background: var(--White, #fff);
 }
 
 .NumberField input:focus {
@@ -100,6 +107,23 @@
 }
 
 .TextInput:focus {
+  outline: none;
+}
+
+.TextAreaInput {
+  min-height: 174px;
+  padding: 12px 16px;
+  resize: none;
+  border-radius: 8px;
+  border: 1px solid var(--Grey-Grey-3, #e1e3e6);
+  background: var(--White, #fff);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.TextAreaInput:focus {
   outline: none;
 }
 
@@ -163,11 +187,20 @@
 
 .Image {
   width: 165.157px;
-  height: 165.5px;
+  aspect-ratio: 1/1;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.Image div {
+  position: absolute;
+  inset: 0px;
+  transform: translate(10px);
+  border: 4.7px solid #f7df1e;
+  border-radius: 50%;
+  z-index: -10;
 }
 
 .Image img {
@@ -175,8 +208,6 @@
   object-fit: cover;
   width: 100%;
   aspect-ratio: 1/1;
-  stroke-width: 2.749px;
-  stroke: #f7df1e;
 }
 
 .Image input {
@@ -200,4 +231,109 @@
   bottom: 0%;
   right: 0%;
   transform: translate(-0.5rem, -0.5rem);
+}
+
+.Resume {
+  display: flex;
+  padding: 12px 4px 12px 16px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid var(--Grey-Grey-3, #e1e3e6);
+  background: var(--White, #fff);
+}
+
+.Resume p {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.Resume input {
+  display: none;
+}
+
+.Resume label {
+  display: flex;
+  cursor: pointer;
+  width: 79.945px;
+  height: 25.081px;
+  justify-content: center;
+  align-items: center;
+  gap: 2.042px;
+  border-radius: 12.25px;
+  background: #000;
+  color: var(--Primary-blue, #fff);
+  font-size: 14.292px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 14.292px */
+}
+
+.SocialType {
+  display: flex;
+  width: fit-content;
+  padding: 0.7rem 1rem;
+  align-items: center;
+  gap: 0.4rem;
+  color: #4461f2;
+}
+
+.GallaryImages {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  gap: 0.25rem;
+}
+
+.GallaryImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 6.332px;
+  aspect-ratio: 1/1;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  overflow: hidden;
+  border-radius: 13.931px;
+  background: #eceffe;
+  color: #4461f2;
+  font-size: 2rem;
+  position: relative;
+}
+
+.FirstImage {
+  grid-column: span 2 / span 2;
+  grid-row: span 2 / span 2;
+}
+
+.ImageButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border: none;
+  width: fit-content;
+  padding: 0.5rem;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  padding: 5px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
 }

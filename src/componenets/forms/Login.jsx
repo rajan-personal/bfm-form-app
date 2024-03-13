@@ -108,28 +108,31 @@ export default function Login({ setPage }) {
           verify your account. Message & data rates may apply.
         </div>
         <form onSubmit={handleSendOTP} className="formLayout">
-          <div className={style.NumberField}>
-            <label htmlFor="phone_number">Phone Number</label>
-            <div className="InputField">
+          <div className={style.TextField}>
+            <label htmlFor="phone_number" className={style.Label}>
+              Phone Number
+            </label>
+            <div
+              style={{
+                display: "flex",
+              }}
+              className={style.NumberField}
+            >
               <p className="m-0 font-p">+91</p>
               <input
                 name="phone_number"
+                type="number"
                 id="phone_number"
-                className="NumberField"
                 maxLength={10}
                 placeholder=""
               />
             </div>
           </div>
           {!isOTP ? (
-            <div className={style.Btn}>
-              <input
-                className="PrimaryBtn"
-                type="submit"
-                value={"Get OTP"}
-                id="OtpButton"
-              />
-            </div>
+            <button className="PrimaryBtn" type="submit" id="OtpButton">
+              {" "}
+              Get OTP
+            </button>
           ) : null}
         </form>
 

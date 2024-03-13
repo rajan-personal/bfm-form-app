@@ -7,6 +7,25 @@ body {
   background: #ffff;
 }
 
+ul {
+  list-style: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+::-webkit-inner-spin-button {
+  display: none;
+}
+
+::-webkit-outer-spin-button {
+  display: none;
+}
+
 hr {
   width: 100%;
   height: 1px;
@@ -26,7 +45,8 @@ hr {
 }
 
 .font-p {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  width: fit-content;
 }
 
 .PrimaryBtn {
@@ -46,7 +66,30 @@ hr {
   line-height: 24px; /* 150% */
 }
 
-.InputField {
+.SecondaryBtn {
+  display: flex;
+  border: none;
+  padding: 5px 190px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  align-self: stretch;
+  border-radius: 6px;
+  background: #f2f2f2;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.TeriaryButton {
+  border: none;
+  background: transparent;
+  width: fit-content;
+  padding: 0;
+}
+
+/* .InputField {
   display: flex;
   width: 410px;
   height: 34px;
@@ -60,7 +103,7 @@ hr {
 
 .InputField:focus {
   outline: none;
-}
+} */
 
 .formLayout {
   display: flex;
