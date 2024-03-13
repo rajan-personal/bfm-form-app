@@ -47,7 +47,7 @@ export default function Login({ setPage }) {
     console.log(phone_number);
     generateRecaptcha();
     let appVerifier = window.recaptchaVerifier;
-    signInWithPhoneNumber(auth, phone_number, appVerifier)
+    signInWithPhoneNumber(auth, `+91${phone_number}`, appVerifier)
       .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
@@ -107,10 +107,19 @@ export default function Login({ setPage }) {
           Please enter your phone number. You will receive a text message to
           verify your account. Message & data rates may apply.
         </div>
-        <form onSubmit={handleSendOTP}>
+        <form onSubmit={handleSendOTP} className="formLayout">
           <div className={style.NumberField}>
-            <label htmlFor="numberfield">Phone Number</label>
-            <input id="phone_number" placeholder="+91" />
+            <label htmlFor="phone_number">Phone Number</label>
+            <div className="InputField">
+              <p className="m-0 font-p">+91</p>
+              <input
+                name="phone_number"
+                id="phone_number"
+                className="NumberField"
+                maxLength={10}
+                placeholder=""
+              />
+            </div>
           </div>
           {!isOTP ? (
             <div className={style.Btn}>
@@ -125,20 +134,21 @@ export default function Login({ setPage }) {
         </form>
 
         {isOTP ? (
-          <form onSubmit={verifyOtp}>
+          <form onSubmit={verifyOtp} className="formLayout">
             <div className={otpStyle.Container}>
               <div className={otpStyle.Label}>Enter OTP</div>
-              <div>
-                <OTPInput
-                  value={otp}
-                  onChange={setOtp}
-                  numInputs={6}
-                  inputStyle={otpStyle.inputStyle}
-                  placeholder="000000"
-                  renderInput={(props) => <input {...props} />}
-                />
+              <OTPInput
+                value={otp}
+                onChange={setOtp}
+                numInputs={6}
+                inputStyle={otpStyle.inputStyle}
+                containerStyle={otpStyle.containerStyle}
+                placeholder="000000"
+                renderInput={(props) => <input {...props} />}
+              />
+              <div type="button" className={otpStyle.Resend}>
+                Resend OTP
               </div>
-              <div className={otpStyle.Resend}>Resend OTP</div>
             </div>
             <div className={style.Btn}>
               <input

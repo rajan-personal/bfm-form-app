@@ -1,6 +1,13 @@
 .Container {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+
+.containerStyle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .Label {
@@ -8,17 +15,29 @@
 }
 
 .inputStyle {
-  height: 45px;
-  width: 30px !important;
-  font-size: 16px;
-  margin: 10px 4px;
+  display: flex;
+  padding: 16.041px;
+  align-items: center;
+  gap: 5.729px;
+  border-radius: 9.166px;
+  border: 1px solid #ccc;
+  background: var(--White, #fff);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 16.041px */
+  letter-spacing: -0.802px;
+}
 
-  border-radius: 10px;
-  border: 1px solid rgba(204, 204, 204, 1);
+.inputStyle:focus {
+  outline: none;
 }
 
 .Resend {
-  font-size: 14px;
-  color: rgba(68, 97, 242, 1);
-  margin-bottom: 10px;
+  color: var(--Primary-1, #4461f2);
+  cursor: pointer;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: 24px; /* 200% */
 }

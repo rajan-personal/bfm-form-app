@@ -144,9 +144,11 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
     seller.images.forEach((img, index) => {
       formData.append("images", img);
     });
+
     if (seller.video) {
       formData.append("video", seller.video);
     }
+
     // Append coordinates
     formData.append("coordinates", JSON.stringify(seller.coordinates));
 
