@@ -1,9 +1,8 @@
 .Container {
-  width: 100%;
+  width: 91.11%;
+  margin: 0 auto;
   height: 6rem;
-  border-bottom: 2px solid #eceeeb;
   display: flex;
-  justify-content: center;
 }
 
 .Center {
@@ -11,14 +10,13 @@
   flex-direction: row;
   align-items: center;
   height: 100%;
-  width: 1920px;
+  max-width: 1920px;
 }
 
 .Wrapper {
   width: fit-content;
   display: flex;
   align-items: center;
-  margin-left: 40px;
 }
 
 .Heading {

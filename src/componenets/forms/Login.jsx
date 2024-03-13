@@ -134,20 +134,21 @@ export default function Login({ setPage }) {
         </form>
 
         {isOTP ? (
-          <form onSubmit={verifyOtp}>
+          <form onSubmit={verifyOtp} className="formLayout">
             <div className={otpStyle.Container}>
               <div className={otpStyle.Label}>Enter OTP</div>
-              <div>
-                <OTPInput
-                  value={otp}
-                  onChange={setOtp}
-                  numInputs={6}
-                  inputStyle={otpStyle.inputStyle}
-                  placeholder="000000"
-                  renderInput={(props) => <input {...props} />}
-                />
+              <OTPInput
+                value={otp}
+                onChange={setOtp}
+                numInputs={6}
+                inputStyle={otpStyle.inputStyle}
+                containerStyle={otpStyle.containerStyle}
+                placeholder="000000"
+                renderInput={(props) => <input {...props} />}
+              />
+              <div type="button" className={otpStyle.Resend}>
+                Resend OTP
               </div>
-              <div className={otpStyle.Resend}>Resend OTP</div>
             </div>
             <div className={style.Btn}>
               <input

@@ -3,10 +3,11 @@ import Home from "./componenets/screens/Home";
 
 function App() {
   return (
-    <>
+    <main>
       <Navbar />
+      <hr />
       <Home />
-    </>
+    </main>
   );
 }
 

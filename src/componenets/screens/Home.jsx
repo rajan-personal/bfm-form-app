@@ -7,7 +7,7 @@ import ProfessionalInfo from "../forms/ProfessionalInfo";
 import WorkInfo from "../forms/WorkInfo";
 
 export default function Home() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(3);
 
   const [seller, setSeller] = useState({
     image: null,
@@ -36,27 +36,25 @@ export default function Home() {
   return (
     <div className={style.Container}>
       <div className={style.Center}>
-        <div className={style.Wrapper}>
-          <Bread page={page} />
-          {page === 1 ? <Login setPage={setPage} /> : null}
-          {page === 2 ? (
-            <PersonalInfo
-              seller={seller}
-              setSeller={setSeller}
-              setPage={setPage}
-            />
-          ) : null}
-          {page === 3 ? (
-            <ProfessionalInfo
-              seller={seller}
-              setSeller={setSeller}
-              setPage={setPage}
-            />
-          ) : null}
-          {page === 4 ? (
-            <WorkInfo seller={seller} setSeller={setSeller} setPage={setPage} />
-          ) : null}
-        </div>
+        <Bread page={page} />
+        {page === 1 ? <Login setPage={setPage} /> : null}
+        {page === 2 ? (
+          <PersonalInfo
+            seller={seller}
+            setSeller={setSeller}
+            setPage={setPage}
+          />
+        ) : null}
+        {page === 3 ? (
+          <ProfessionalInfo
+            seller={seller}
+            setSeller={setSeller}
+            setPage={setPage}
+          />
+        ) : null}
+        {page === 4 ? (
+          <WorkInfo seller={seller} setSeller={setSeller} setPage={setPage} />
+        ) : null}
       </div>
     </div>
   );
