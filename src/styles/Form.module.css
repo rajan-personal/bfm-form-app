@@ -17,38 +17,41 @@
 
 .Page {
   margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .Header {
   font-weight: 700;
   font-size: 32px;
-  margin-bottom: 20px;
 }
 
 .Subtext {
   width: 580px;
   font-size: 16px;
   color: rgba(102, 102, 102, 1);
-  margin-bottom: 20px;
 }
 
 .NumberField {
   display: flex;
   flex-direction: column;
+  gap: 1.2rem;
 }
 
 .NumberField label {
   color: rgba(64, 77, 97, 1);
-  margin-bottom: 20px;
   font-weight: 500;
 }
+
 .NumberField input {
-  margin-bottom: 20px;
-  width: 400px;
-  padding: 8px 20px;
-  font-size: 16px;
-  border: 1px solid rgba(225, 227, 230, 1);
-  border-radius: 8px;
+  width: 100%;
+  font-size: 1.2rem;
+  border: none;
+}
+
+.NumberField input:focus {
+  outline: none;
 }
 
 .Btn {
