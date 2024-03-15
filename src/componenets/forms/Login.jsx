@@ -5,10 +5,12 @@ import { auth } from "./../../utils/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import OTPInput from "react-otp-input";
 import axios from "axios";
+import SubscriptionConfirmation from "../Modals/SubscriptionConfirmation";
 
 export default function Login({ setPage }) {
   const [isOTP, setIsOTP] = useState(false);
   const [otp, setOtp] = useState("");
+  const [isExistingUser, setIsExistingUser] = useState(false);
 
   async function loginUser(token) {
     try {
@@ -82,7 +84,8 @@ export default function Login({ setPage }) {
               if (!data.isSeller) {
                 setPage(2);
               } else {
-                alert("already a seller");
+                setIsExistingUser(true);
+                // alert("already a seller");
               }
             })
             .catch((err) => {
@@ -165,6 +168,7 @@ export default function Login({ setPage }) {
         ) : null}
       </div>
       <div id="recaptcha"></div>
+      {isExistingUser && <SubscriptionConfirmation />}
     </div>
   );
 }

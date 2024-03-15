@@ -5,6 +5,7 @@ body {
   padding: 0;
   border: 0;
   background: #ffff;
+  overflow-x: hidden;
 }
 
 ul {
@@ -51,10 +52,13 @@ hr {
 
 .PrimaryBtn {
   display: flex;
-  padding: 5px 0;
+  padding: 5px;
   justify-content: center;
   align-items: center;
   width: 100%;
+  text-transform: capitalize;
+  white-space: nowrap;
+  border: none;
   gap: 5px;
   align-self: stretch;
   border-radius: 6px;
@@ -69,11 +73,12 @@ hr {
 .SecondaryBtn {
   display: flex;
   border: none;
-  padding: 5px 190px;
+  padding: 5px;
   justify-content: center;
   align-items: center;
   gap: 5px;
   align-self: stretch;
+  white-space: nowrap;
   border-radius: 6px;
   background: #f2f2f2;
   font-size: 16px;
@@ -89,25 +94,21 @@ hr {
   padding: 0;
 }
 
-/* .InputField {
-  display: flex;
-  width: 410px;
-  height: 34px;
-  padding: 12px 16px;
-  align-items: center;
-  gap: 8px;
-  border-radius: 8px;
-  border: 1px solid var(--Grey-Grey-3, #e1e3e6);
-  background: var(--White, #fff);
-}
-
-.InputField:focus {
-  outline: none;
-} */
-
 .formLayout {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
   width: 50%;
+}
+
+@media screen and (max-width: 500px) and (min-width: 220px) {
+  .formLayout {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .formLayout {
+    width: 100%;
+  }
 }

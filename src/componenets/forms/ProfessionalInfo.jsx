@@ -50,6 +50,10 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
   };
   return (
     <form onSubmit={handleSubmit} className="formLayout">
+      <div className={style.Header}>Professional Information</div>
+      <div className={style.Subtext}>
+        Please enter your Professional Information.
+      </div>
       <div className={style.Page}>
         <div className={style.TextField}>
           <label htmlFor="profession" className={style.Label}>
@@ -107,20 +111,22 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
           <label htmlFor="services" className={style.Label}>
             Services Provided
           </label>
-          <div className={style.TagsContainer}>
-            {seller.services.map((service, index) => (
-              <div key={index} className={style.Tag}>
-                <button
-                  className={style.Remove}
-                  type="button"
-                  onClick={() => handleRemoveServices(index)}
-                >
-                  <RxCross1 />
-                </button>
-                <span>{service}</span>
-              </div>
-            ))}
-          </div>
+          {seller.services.length > 0 && (
+            <div className={style.TagsContainer}>
+              {seller.services.map((service, index) => (
+                <div key={index} className={style.Tag}>
+                  <button
+                    className={style.Remove}
+                    type="button"
+                    onClick={() => handleRemoveServices(index)}
+                  >
+                    <RxCross1 />
+                  </button>
+                  <span>{service}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <input
             type="text"
             name="services"
@@ -136,20 +142,22 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
           <label htmlFor="skills" className={style.Label}>
             Skills
           </label>
-          <div className={style.TagsContainer}>
-            {seller.skills.map((skill, index) => (
-              <div key={index} className={style.Tag}>
-                <button
-                  type="button"
-                  className={style.Remove}
-                  onClick={() => handleRemoveSkills(index)}
-                >
-                  <RxCross1 />
-                </button>
-                <span>{skill}</span>
-              </div>
-            ))}
-          </div>
+          {seller.skills.length > 0 && (
+            <div className={style.TagsContainer}>
+              {seller.skills.map((skill, index) => (
+                <div key={index} className={style.Tag}>
+                  <button
+                    type="button"
+                    className={style.Remove}
+                    onClick={() => handleRemoveSkills(index)}
+                  >
+                    <RxCross1 />
+                  </button>
+                  <span>{skill}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <input
             type="text"
             name="skills"

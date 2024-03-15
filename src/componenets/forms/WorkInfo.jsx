@@ -6,12 +6,14 @@ import {
   FaLinkedinIn,
   FaPause,
   FaPlay,
+  FaUpload,
 } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
 import { SiBehance } from "react-icons/si";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import { IoAdd } from "react-icons/io5";
+import ThankYouPage from "../Modals/ThankYouPage";
 
 const SocialTypes = [
   {
@@ -41,6 +43,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
 
   const [socialType, setSocialType] = useState("");
   const [socialLink, setSocialLink] = useState("");
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const imagesRef = useRef([]);
   const videoRef = useRef(null);
@@ -174,10 +177,12 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
       );
       console.log(response.data);
       setIsLoading(false);
+      setIsCompleted(true);
       alert("seller created!!");
     } catch (error) {
       console.error(error);
       setIsLoading(false);
+      setIsCompleted(false);
     }
   };
 
@@ -217,6 +222,10 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
 
   return (
     <form onSubmit={handleSubmit} className="formLayout">
+      <div className={style.Header}>Show Your work</div>
+      <div className={style.Subtext}>
+        Please enter your Work, Projects and Experiences.
+      </div>
       <div className={style.Page}>
         <div className={style.TextField}>
           <label htmlFor="description" className={style.Label}>
@@ -410,6 +419,83 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
             Add Experiences
           </button>
         </div>
+
+        <div className={style.TextField}>
+          <label htmlFor="" className={style.Label}></label>
+          {seller.video ? (
+            <div className={style.videoContainer}>
+              <video
+                src={createFileUrl(seller.video)}
+                alt=""
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  aspectRatio: 16 / 9,
+                  objectFit: "cover",
+                  cursor: "pointer",
+                }}
+                ref={videoRef}
+                onClick={handlePlay}
+              />
+              <button
+                className={style.PlayButton}
+                type="button"
+                onClick={handlePlay}
+              >
+                {videoRef.current && videoRef.current.paused ? (
+                  <FaPlay />
+                ) : (
+                  <FaPause />
+                )}
+              </button>
+              <button
+                type="button"
+                className={style.ImageButton}
+                onClick={() =>
+                  setSeller((prev) => {
+                    return { ...prev, video: null };
+                  })
+                }
+              >
+                <RxCross2
+                  style={{
+                    padding: 2,
+                    background: "white",
+                    borderRadius: "50%",
+                  }}
+                />
+              </button>
+            </div>
+          ) : (
+            <div>
+              <label
+                htmlFor="video"
+                style={{
+                  zIndex: 10,
+                  cursor: "pointer",
+                }}
+                className="PrimaryBtn"
+              >
+                <FaUpload /> Upload Video
+              </label>
+              <input
+                ref={videoRef}
+                type="file"
+                name="video"
+                id="video"
+                style={{
+                  display: "none",
+                }}
+                onChange={(e) =>
+                  setSeller((prev) => {
+                    return { ...prev, video: e.target.files[0] };
+                  })
+                }
+                accept="video/*"
+              />
+            </div>
+          )}
+        </div>
         <div className={style.TextField}>
           <label className={style.Label}></label>
           <div className={style.GallaryImages}>
@@ -463,7 +549,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
                     style={{
                       display: "none",
                     }}
-                    accept="image/*"
+                    accept="image/* || video/*"
                     onChange={(e) =>
                       handleImagesAdd({ index, file: e.target.files[0] })
                     }
@@ -475,72 +561,8 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
             )}
           </div>
         </div>
-        <div className={style.TextField}>
-          <label htmlFor="">Video (Optional)</label>
-          {seller.video ? (
-            <div className={style.videoContainer}>
-              <video
-                src={createFileUrl(seller.video)}
-                alt=""
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  aspectRatio: 1 / 1,
-                  objectFit: "cover",
-                  cursor: "pointer",
-                }}
-                ref={videoRef}
-                onClick={handlePlay}
-              />
-              <button
-                type="button"
-                className={style.ImageButton}
-                onClick={() =>
-                  setSeller((prev) => {
-                    return { ...prev, video: null };
-                  })
-                }
-              >
-                <RxCross2
-                  style={{
-                    padding: 2,
-                    background: "white",
-                    borderRadius: "50%",
-                  }}
-                />
-              </button>
-            </div>
-          ) : (
-            <div>
-              <label
-                htmlFor="video"
-                style={{
-                  zIndex: 10,
-                }}
-                className={style.GallaryImage}
-              >
-                <IoAdd />
-              </label>
-              <input
-                ref={videoRef}
-                type="file"
-                name="video"
-                id="video"
-                style={{
-                  display: "none",
-                }}
-                onChange={(e) =>
-                  setSeller((prev) => {
-                    return { ...prev, video: e.target.files[0] };
-                  })
-                }
-                accept="video/*"
-              />
-            </div>
-          )}
-        </div>
         <div className={style.CheckBox}>
-          <input type="checkbox" name="agree" id="agree" />
+          <input type="checkbox" name="agree" id="agree" required />
           <label htmlFor="agree" className={style.Label}>
             I agree to all{" "}
             <a href="" target="_blank">
@@ -556,6 +578,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
           {isLoading ? "Loading..." : "submit"}
         </button>
       </div>
+      {isCompleted && <ThankYouPage />}
     </form>
   );
 }

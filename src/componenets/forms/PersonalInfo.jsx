@@ -6,7 +6,7 @@ import { IoCameraOutline } from "react-icons/io5";
 export default function PersonalInfo({ seller, setSeller, setPage }) {
   let emailValidateTimeOut;
   let userNameValidateTimeOut;
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(null);
   const [isUserNameValid, setIsUserNameValid] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -46,9 +46,23 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
       clearTimeout(emailValidateTimeOut);
     }
     emailValidateTimeOut = setTimeout(() => {
-      checkEmail(seller.email)
-        .then((res) => setIsEmailValid(res))
-        .catch((err) => setIsEmailValid(false));
+      var regexp =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (regexp.test(seller.email)) {
+        checkEmail(seller.email)
+          .then((res) =>
+            setIsEmailValid({ color: "green", message: "Email is valid" })
+          )
+          .catch((err) =>
+            setIsEmailValid({ color: "red", message: "Email already taken" })
+          );
+      } else {
+        setIsEmailValid({
+          color: "red",
+          message: "Please Enter a valid email address",
+        });
+      }
     }, 500);
   }, [seller.email]);
 
@@ -65,6 +79,10 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
 
   return (
     <form onSubmit={handleSubmit} className="formLayout">
+      <div className={style.Header}>Personal Information</div>
+      <div className={style.Subtext}>
+        Please enter your Personal Information. To Become a seller on BFM.
+      </div>
       <div className={style.Page}>
         <div className={style.Image}>
           {imageUrl ? (
@@ -93,7 +111,7 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
               }}
             />
           </label>
-          <div />
+          {/* <div /> */}
         </div>
         <div className={style.TextField}>
           <label htmlFor="name" className={style.Label}>
@@ -185,12 +203,21 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
             }
           />
           {seller.email === "" ? null : isEmailValid ? (
-            <h4 style={{ color: "green", margin: 0 }}>Email available</h4>
+            <h4 style={{ color: isEmailValid?.color, margin: 0 }}>
+              {isEmailValid?.message}
+            </h4>
           ) : (
-            <h4 style={{ color: "red", margin: 0 }}>Email Invalid</h4>
+            <h4 style={{ color: isEmailValid?.color, margin: 0 }}>
+              {isEmailValid?.message}
+            </h4>
           )}
         </div>
-        <div className={style.TextField}>
+        <div
+          style={{
+            display: "none",
+          }}
+          className={style.TextField}
+        >
           <label htmlFor="phone_number" className={style.Label}>
             Phone Number
           </label>
