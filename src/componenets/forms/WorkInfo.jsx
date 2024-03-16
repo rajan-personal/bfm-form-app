@@ -7,6 +7,7 @@ import {
   FaPause,
   FaPlay,
   FaUpload,
+  FaVideo,
 } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
 import { SiBehance } from "react-icons/si";
@@ -41,6 +42,7 @@ const SocialTypes = [
 export default function WorkInfo({ seller, setSeller, setPage }) {
   const [isLoading, setIsLoading] = useState(false);
 
+  const [media, setMedia] = useState([null, null, null, null, null, null]);
   const [socialType, setSocialType] = useState("");
   const [socialLink, setSocialLink] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
@@ -102,20 +104,64 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
     setSeller({ ...seller, socialMediaLinks: arr });
   }
 
-  const handleImagesAdd = ({ index, file }) => {
-    setSeller((prev) => {
-      let imgsArr = prev.images;
-      imgsArr[index] = file;
-      return { ...prev, images: imgsArr };
-    });
+  const handleMediaAdd = ({ index, file }) => {
+    const fileType = file?.type.split("/")[0];
+    if (fileType === "video") {
+      const video = document.createElement("video");
+      video.src = URL.createObjectURL(file);
+      video.onloadedmetadata = () => {
+        if (video.duration <= 60) {
+          setMedia((prev) => {
+            let midArr = prev;
+            midArr[index] = file;
+            return midArr;
+          });
+          setSeller((prev) => {
+            let vidArr = prev.video;
+            vidArr[index] = file;
+            return { ...prev, video: vidArr };
+          });
+        } else {
+          alert("Please upload a video less than 1 minutes in duration.");
+        }
+      };
+    } else {
+      setMedia((prev) => {
+        let midArr = prev;
+        midArr[index] = file;
+        return midArr;
+      });
+      setSeller((prev) => {
+        if (fileType === "image") {
+          let imgsArr = prev.images;
+          imgsArr[index] = file;
+          return { ...prev, images: imgsArr };
+        }
+        return prev;
+      });
+    }
   };
 
-  const handleRemoveImages = (index) => {
-    setSeller((prev) => {
-      let imgsArr = prev.images;
-      imgsArr[index] = null;
-      return { ...prev, images: imgsArr };
+  const handleRemoveMedia = (index, file) => {
+    const fileType = file?.type.split("/")[0];
+    setMedia((prev) => {
+      let midArr = prev;
+      midArr[index] = null;
+      return midArr;
     });
+    if (fileType === "image") {
+      setSeller((prev) => {
+        let imgsArr = prev.images;
+        imgsArr[index] = null;
+        return { ...prev, images: imgsArr };
+      });
+    } else {
+      setSeller((prev) => {
+        let vidArr = prev.video;
+        vidArr[index] = null;
+        return { ...prev, video: vidArr };
+      });
+    }
 
     if (imagesRef.current[index] && imagesRef.current[index].current) {
       imagesRef.current[index].current.value = "";
@@ -420,7 +466,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
           </button>
         </div>
 
-        <div className={style.TextField}>
+        {/* <div className={style.TextField}>
           <label htmlFor="" className={style.Label}></label>
           {seller.video ? (
             <div className={style.videoContainer}>
@@ -495,31 +541,46 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
               />
             </div>
           )}
-        </div>
+        </div> */}
         <div className={style.TextField}>
           <label className={style.Label}></label>
           <div className={style.GallaryImages}>
-            {seller.images.map((img, index) =>
-              img ? (
+            {media.map((media, index) =>
+              media ? (
                 <div
                   key={index}
                   className={`${style.GallaryImage} ${
                     index === 0 && style.FirstImage
                   }`}
                 >
-                  <img
-                    src={createFileUrl(img)}
-                    alt=""
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
+                  {media.type && media.type.startsWith("image/") ? (
+                    <img
+                      src={createFileUrl(media)}
+                      alt=""
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    />
+                  ) : (
+                    <video
+                      src={createFileUrl(media)}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        cursor: "pointer",
+                      }}
+                      ref={videoRef}
+                      onClick={handlePlay}
+                    />
+                  )}
                   <button
                     type="button"
                     className={style.ImageButton}
-                    onClick={() => handleRemoveImages(index)}
+                    onClick={() => handleRemoveMedia(index, media)}
                   >
                     <RxCross2
                       style={{
@@ -529,10 +590,25 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
                       }}
                     />
                   </button>
+                  {media.type && media.type.startsWith("video/") && (
+                    <button
+                      type="button"
+                      className={style.VideoButton}
+                      onClick={() => handleRemoveMedia(index, media)}
+                    >
+                      <FaVideo
+                        style={{
+                          padding: 2,
+                          background: "white",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </button>
+                  )}
                 </div>
               ) : (
                 <label
-                  htmlFor={img}
+                  htmlFor={media}
                   style={{
                     cursor: "pointer",
                     zIndex: 10,
@@ -544,14 +620,14 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
                 >
                   <input
                     type="file"
-                    name={img}
-                    id={img}
+                    name={media}
+                    id={media}
                     style={{
                       display: "none",
                     }}
-                    accept="image/* || video/*"
+                    // accept="image/* || video/*"
                     onChange={(e) =>
-                      handleImagesAdd({ index, file: e.target.files[0] })
+                      handleMediaAdd({ index, file: e.target.files[0] })
                     }
                     ref={imagesRef.current[index]}
                   />
@@ -561,6 +637,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
             )}
           </div>
         </div>
+
         <div className={style.CheckBox}>
           <input type="checkbox" name="agree" id="agree" required />
           <label htmlFor="agree" className={style.Label}>

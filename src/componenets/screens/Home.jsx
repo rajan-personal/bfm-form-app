@@ -26,7 +26,7 @@ export default function Home() {
     socialMediaLinks: [],
     experienceDetails: [],
     images: [null, null, null, null, null, null],
-    video: null,
+    video: [null, null, null, null, null, null],
     coordinates: { longitude: 0, latitude: 0 },
   });
 

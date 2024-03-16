@@ -9,6 +9,7 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
   const [isEmailValid, setIsEmailValid] = useState(null);
   const [isUserNameValid, setIsUserNameValid] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [cities, setCities] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,6 +77,28 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
         .catch((err) => setIsUserNameValid(false));
     }, 500);
   }, [seller.userName]);
+
+  // =================================================================
+  async function getCities(e) {
+    try {
+      const city = e.target.value;
+      setSeller({ ...seller, city: city });
+      const res = await axios.get(
+        `https://api.blackfoxmetaverse.io/suggestion/cities?keyword=${city}`
+      );
+      setCities(res.data?.cities);
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+    }
+  }
+
+  const handleCitySelection = (selectedCity) => {
+    setSeller({ ...seller, city: selectedCity });
+    setCities([]);
+  };
+
+  console.log(cities);
+  // =================================================================
 
   return (
     <form onSubmit={handleSubmit} className="formLayout">
@@ -241,16 +264,24 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
             name="city"
             id="city"
             className={style.TextInput}
-            placeholder="Enter your current city"
+            placeholder="Select Your City"
             required
             value={seller.city}
-            onChange={(e) =>
-              setSeller((prev) => ({
-                ...prev,
-                city: e.target.value,
-              }))
-            }
+            onChange={(e) => getCities(e)}
           />
+          {seller?.city !== "" && cities && (
+            <div className={style.SuggestionContainer}>
+              {cities?.map((city, index) => (
+                <div
+                  key={index}
+                  className={style.Suggestion}
+                  onClick={() => handleCitySelection(city["ASCII Name"])}
+                >
+                  {city["ASCII Name"]}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <button className="PrimaryBtn" type="submit">
           Save & Continue

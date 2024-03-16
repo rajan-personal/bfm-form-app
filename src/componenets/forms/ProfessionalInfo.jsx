@@ -1,47 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../styles/Form.module.css";
 import { RxCross1 } from "react-icons/rx";
+import axios from "axios";
 
 export default function ProfessionalInfo({ seller, setSeller, setPage }) {
   const [skillInput, setSkillInput] = useState("");
   const [serviceInput, setServiceInput] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [services, setServices] = useState([]);
 
-  const handleAddSkills = (e) => {
-    if (e.key === "Enter") {
-      const newSkill = skillInput.trim();
-      if (newSkill !== "") {
-        setSeller((prev) => {
-          return { ...prev, skills: [...prev.skills, newSkill] };
-        });
-        setSkillInput("");
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.blackfoxmetaverse.io/suggestion/skills?keyword=${skillInput}`
+        );
+        setSkills(
+          response.data?.skills?.filter(
+            (skill) => !seller.skills.includes(skill.tag)
+          )
+        );
+      } catch (error) {
+        console.error("Error fetching skills:", error);
       }
+    };
+
+    if (skillInput) {
+      fetchSkills();
+    } else {
+      setSkills([]);
     }
+  }, [skillInput, seller.skills]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.blackfoxmetaverse.io/suggestion/services?keyword=${serviceInput}`
+        );
+        setServices(
+          response.data?.services?.filter(
+            (service) => !seller.services.includes(service.tag)
+          )
+        );
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    if (serviceInput) {
+      fetchServices();
+    } else {
+      setServices([]);
+    }
+  }, [serviceInput, seller.services]);
+
+  const handleAddSkills = (skill) => {
+    setSeller((prev) => ({
+      ...prev,
+      skills: [...prev.skills, skill],
+    }));
+    setSkillInput("");
   };
 
-  const handleAddServices = (e) => {
-    if (e.key === "Enter") {
-      const newService = serviceInput.trim();
-      if (newService !== "") {
-        setSeller((prev) => {
-          return { ...prev, services: [...prev.services, newService] };
-        });
-        setServiceInput("");
-      }
-    }
+  const handleAddServices = (service) => {
+    setSeller((prev) => ({
+      ...prev,
+      services: [...prev.services, service],
+    }));
+    setServiceInput("");
   };
 
   const handleRemoveSkills = (index) => {
-    setSeller((prev) => {
-      const updatedSkills = prev.skills.filter((_, i) => i !== index);
-      return { ...prev, skills: updatedSkills };
-    });
+    setSeller((prev) => ({
+      ...prev,
+      skills: prev.skills.filter((_, i) => i !== index),
+    }));
   };
 
   const handleRemoveServices = (index) => {
-    setSeller((prev) => {
-      const updatedServices = prev.services.filter((_, i) => i !== index);
-      return { ...prev, services: updatedServices };
-    });
+    setSeller((prev) => ({
+      ...prev,
+      services: prev.services.filter((_, i) => i !== index),
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -135,8 +176,20 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
             className={style.TextInput}
             value={serviceInput}
             onChange={(e) => setServiceInput(e.target.value)}
-            onKeyDown={handleAddServices}
           />
+          {serviceInput !== "" && services && (
+            <div className={style.SuggestionContainer}>
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  className={style.Suggestion}
+                  onClick={() => handleAddServices(service.tag)}
+                >
+                  {service.tag}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={style.TextField}>
           <label htmlFor="skills" className={style.Label}>
@@ -147,8 +200,8 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
               {seller.skills.map((skill, index) => (
                 <div key={index} className={style.Tag}>
                   <button
-                    type="button"
                     className={style.Remove}
+                    type="button"
                     onClick={() => handleRemoveSkills(index)}
                   >
                     <RxCross1 />
@@ -166,8 +219,20 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
             placeholder="Enter Skill"
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
-            onKeyDown={handleAddSkills}
           />
+          {skillInput && skills && (
+            <div className={style.SuggestionContainer}>
+              {skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className={style.Suggestion}
+                  onClick={() => handleAddSkills(skill.tag)}
+                >
+                  {skill.tag}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={style.TextField}>
           <label htmlFor="collegeName" className={style.Label}>

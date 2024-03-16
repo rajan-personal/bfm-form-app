@@ -8,6 +8,11 @@ body {
   overflow-x: hidden;
 }
 
+textarea {
+  font-family: "Inter", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+    sans-serif;
+}
+
 ul {
   list-style: none;
   display: inline;
