@@ -122,7 +122,7 @@ export default function WorkInfo({ seller, setSeller, setPage }) {
             return { ...prev, video: vidArr };
           });
         } else {
-          alert("Please upload a video less than 1 minutes in duration.");
+          alert("Please upload a video less than 1 minute in duration.");
         }
       };
     } else {
