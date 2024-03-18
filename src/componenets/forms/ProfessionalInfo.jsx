@@ -9,6 +9,7 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
   const [skills, setSkills] = useState([]);
   const [services, setServices] = useState([]);
   const [profession, setProfession] = useState([]);
+  const [colleges, setColleges] = useState([]);
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -95,13 +96,31 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
       );
       setProfession(res.data?.professions);
     } catch (error) {
-      console.error("Error fetching cities:", error);
+      console.error("Error fetching profession:", error);
     }
   }
 
   const handleProfessionSelection = (selectedProfession) => {
     setSeller({ ...seller, profession: selectedProfession });
     setProfession([]);
+  };
+
+  async function getColleges(e) {
+    try {
+      const college = e.target.value;
+      setSeller({ ...seller, collegeName: college });
+      const res = await axios.get(
+        `https://api.blackfoxmetaverse.io/suggestion/colleges?keyword=${college}`
+      );
+      setColleges(res.data?.colleges);
+    } catch (error) {
+      console.error("Error fetching colleges:", error);
+    }
+  }
+
+  const handleCollegesSelection = (selectedProfession) => {
+    setSeller({ ...seller, collegeName: selectedProfession });
+    setColleges([]);
   };
 
   const handleSubmit = (e) => {
@@ -266,13 +285,23 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
             className={style.TextInput}
             placeholder="Select Your College"
             value={seller.collegeName}
-            onChange={(e) =>
-              setSeller((prev) => ({
-                ...prev,
-                collegeName: e.target.value,
-              }))
-            }
+            onChange={(e) => getColleges(e)}
           />
+          {seller?.collegeName !== "" && colleges.length > 0 && (
+            <div className={style.SuggestionContainer}>
+              {colleges?.map((college, index) => (
+                <div
+                  key={index}
+                  className={style.Suggestion}
+                  onClick={() =>
+                    handleCollegesSelection(college["College Name"])
+                  }
+                >
+                  {college["College Name"]}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={style.TextField}>
           <label htmlFor="resume" className={style.Label}>
