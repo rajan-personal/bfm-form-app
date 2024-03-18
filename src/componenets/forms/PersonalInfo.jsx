@@ -96,8 +96,6 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
     setSeller({ ...seller, city: selectedCity });
     setCities([]);
   };
-
-  console.log(cities);
   // =================================================================
 
   return (
@@ -269,7 +267,7 @@ export default function PersonalInfo({ seller, setSeller, setPage }) {
             value={seller.city}
             onChange={(e) => getCities(e)}
           />
-          {seller?.city !== "" && cities && (
+          {seller?.city !== "" && cities.length > 0 && (
             <div className={style.SuggestionContainer}>
               {cities?.map((city, index) => (
                 <div

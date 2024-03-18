@@ -8,6 +8,7 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
   const [serviceInput, setServiceInput] = useState("");
   const [skills, setSkills] = useState([]);
   const [services, setServices] = useState([]);
+  const [profession, setProfession] = useState([]);
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -85,6 +86,24 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
     }));
   };
 
+  async function getProfession(e) {
+    try {
+      const profession = e.target.value;
+      setSeller({ ...seller, profession: profession });
+      const res = await axios.get(
+        `https://api.blackfoxmetaverse.io/suggestion/professions?keyword=${profession}`
+      );
+      setProfession(res.data?.professions);
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+    }
+  }
+
+  const handleProfessionSelection = (selectedProfession) => {
+    setSeller({ ...seller, profession: selectedProfession });
+    setProfession([]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setPage(4);
@@ -97,30 +116,32 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
       </div>
       <div className={style.Page}>
         <div className={style.TextField}>
-          <label htmlFor="profession" className={style.Label}>
+          <label htmlFor="city" className={style.Label}>
             Profession
           </label>
-          <select
+          <input
+            type="text"
             name="profession"
             id="profession"
+            className={style.TextInput}
+            placeholder="Select Your Profession"
             required
             value={seller.profession}
-            className={style.Dropdown}
-            onChange={(e) =>
-              setSeller((prev) => ({
-                ...prev,
-                profession: e.target.value,
-              }))
-            }
-          >
-            <option value="" disabled>
-              Select your profession
-            </option>
-            <option value="Web Developer">Web Developer</option>
-            <option value="Photo grapher">Photo grapher</option>
-            <option value="Designer">Designer</option>
-            <option value="Software Enginner">Software Enginner</option>
-          </select>
+            onChange={(e) => getProfession(e)}
+          />
+          {seller?.profession !== "" && profession.length > 0 && (
+            <div className={style.SuggestionContainer}>
+              {profession?.map((prof, index) => (
+                <div
+                  key={index}
+                  className={style.Suggestion}
+                  onClick={() => handleProfessionSelection(prof["tag"])}
+                >
+                  {prof["tag"]}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={style.TextField}>
           <label htmlFor="experience" className={style.Label}>
