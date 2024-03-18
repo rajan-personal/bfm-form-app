@@ -217,7 +217,7 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
             value={serviceInput}
             onChange={(e) => setServiceInput(e.target.value)}
           />
-          {serviceInput !== "" && services && (
+          {serviceInput !== "" && services.length > 0 && (
             <div className={style.SuggestionContainer}>
               {services.map((service, index) => (
                 <div
@@ -260,7 +260,7 @@ export default function ProfessionalInfo({ seller, setSeller, setPage }) {
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
           />
-          {skillInput && skills && (
+          {skillInput && skills.length > 0 && (
             <div className={style.SuggestionContainer}>
               {skills.map((skill, index) => (
                 <div
